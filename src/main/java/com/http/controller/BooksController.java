@@ -1,27 +1,20 @@
 package com.http.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
 import com.google.gson.Gson;
-import com.http.plugins.AdminMember;
 import com.http.plugins.Book;
 import com.http.plugins.BookInfo;
 import com.http.plugins.EBook;
 import com.http.plugins.Member;
-import com.http.plugins.MemberInfo;
 import com.http.plugins.OperationRecord;
 import com.http.plugins.PBook;
-import com.http.plugins.RegularMember;
 import com.http.structure.BookForm;
-import com.http.structure.Permission;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bson.Document;
@@ -63,7 +56,7 @@ public class BooksController {
                     this.books.put(bookToken, b);
                 }
 
-                System.out.println(gsonString);
+                System.out.println("bookToken: " + bookToken);
             }
         }
 

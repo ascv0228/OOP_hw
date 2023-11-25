@@ -1,7 +1,6 @@
 package com.http.handlers;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 

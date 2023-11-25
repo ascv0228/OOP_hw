@@ -13,8 +13,8 @@ public class RegularMember extends Member {
         super(mInfo, Permission.Regular);
     }
 
-    public RegularMember(String memberToken, MemberInfo mInfo) {
-        super(memberToken, mInfo, Permission.Regular);
+    public RegularMember(String userToken, MemberInfo mInfo) {
+        super(userToken, mInfo, Permission.Regular);
     }
 
     public static RegularMember CreateRegularMember(String gsonString) {

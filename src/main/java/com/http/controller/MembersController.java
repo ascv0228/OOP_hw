@@ -6,7 +6,6 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
 import com.google.gson.Gson;
 import com.http.plugins.AdminMember;
 import com.http.plugins.Book;
@@ -42,18 +41,18 @@ public class MembersController {
         try (MongoCursor<Document> cursor = documents.iterator()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
-                String memberToken = document.getString("memberToken");
+                String userToken = document.getString("memberToken");
                 Permission pm = Permission.values()[document.getInteger("permission")];
                 String gsonString = document.getString("gson");
                 if (pm == Permission.Administrative) {
                     Member m = gson.fromJson(gsonString, AdminMember.class);
-                    this.members.put(memberToken, m);
+                    this.members.put(userToken, m);
 
                 } else if (pm == Permission.Regular) {
                     Member m = gson.fromJson(gsonString, RegularMember.class);
-                    this.members.put(memberToken, m);
+                    this.members.put(userToken, m);
                 }
-                System.out.println(gsonString);
+                System.out.println("userToken: " + userToken);
             }
         }
     }

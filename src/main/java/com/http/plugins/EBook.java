@@ -31,8 +31,8 @@ public class EBook extends Book {
         return gson.fromJson(gsonString, EBook.class);
     }
 
-    public void Add_AllowedTokens(String memberToken) {
-        this.allowedTokens.add(memberToken);
+    public void Add_AllowedTokens(String userToken) {
+        this.allowedTokens.add(userToken);
     }
 
     public boolean is_MemberAllowed(Member member) {
