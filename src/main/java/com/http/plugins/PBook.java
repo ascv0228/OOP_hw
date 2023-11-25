@@ -1,18 +1,19 @@
 package com.http.plugins;
 
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.http.structure.BookForm;
 import com.http.structure.BookStatus;
 
-import java.util.ArrayList;
 import java.time.ZonedDateTime;
 
 public class PBook extends Book {
     // private static final String LOCATION_FORMAT = "%dF";
     private ZonedDateTime expireTime;
     private String location;
+
+    public PBook(BookInfo bookInfo) {
+        super(bookInfo, BookForm.pbook);
+    }
 
     public PBook(String bookToken, BookInfo bookInfo) {
         super(bookToken, bookInfo, BookForm.pbook);

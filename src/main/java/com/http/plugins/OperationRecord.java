@@ -1,4 +1,6 @@
 package com.http.plugins;
+
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -8,34 +10,37 @@ public class OperationRecord {
     private String userToken;
     private String bookToken;
     private Operation operation;
-    private ZonedDateTime time;
+    private long timeValue;
+    private String timeString;
+    // private ZonedDateTime time;
 
-    public OperationRecord(String userToken, String bookToken, Operation operation, ZonedDateTime time){
+    public OperationRecord(String userToken, String bookToken, Operation operation, ZonedDateTime zonedDateTime) {
         this.userToken = userToken;
         this.bookToken = bookToken;
         this.operation = operation;
-        this.time = time;
+        this.timeValue = zonedDateTime.toInstant().getEpochSecond();
+        this.timeString = zonedDateTime.withZoneSameInstant(ZoneId.of("GMT+8"))
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z"));
     }
 
-    public OperationRecord(String userToken, String bookToken, Operation operation){
-        this( userToken, bookToken, operation,
-            ZonedDateTime.now().withZoneSameInstant(java.time.ZoneOffset.ofHours(8))
-        );
+    public OperationRecord(String userToken, String bookToken, Operation operation) {
+        this(userToken, bookToken, operation,
+                ZonedDateTime.now().withZoneSameInstant(java.time.ZoneOffset.ofHours(8)));
     }
 
-
-    public String time_format(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z");
-        return this.time.format(formatter);
+    public String get_timeString() {
+        return this.timeString;
     }
 
-    public String get_userToken(){
+    public String get_userToken() {
         return this.userToken;
     }
-    public String get_bookToken(){
+
+    public String get_bookToken() {
         return this.bookToken;
     }
-    public Operation get_operation(){
+
+    public Operation get_operation() {
         return this.operation;
     }
 

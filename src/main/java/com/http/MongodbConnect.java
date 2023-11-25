@@ -1,4 +1,5 @@
 package com.http;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.ConnectionString;
@@ -6,28 +7,14 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerApi;
 import com.mongodb.ServerApiVersion;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import com.mongodb.client.MongoClients;
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.ServerApi;
-import com.mongodb.ServerApiVersion;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MongodbConnect {
     private static MongoClient mongoClient;
+
     public static MongoClient connectToMongoDB() {
         // MongoDB connection code
 
@@ -49,5 +36,5 @@ public class MongodbConnect {
 
         return mongoClient;
     }
-    
+
 }

@@ -11,8 +11,10 @@ import com.mongodb.client.MongoDatabase;
 import com.google.gson.Gson;
 import com.http.plugins.AdminMember;
 import com.http.plugins.Book;
+import com.http.plugins.BookInfo;
 import com.http.plugins.EBook;
 import com.http.plugins.Member;
+import com.http.plugins.MemberInfo;
 import com.http.plugins.OperationRecord;
 import com.http.plugins.PBook;
 import com.http.plugins.RegularMember;
@@ -60,13 +62,15 @@ public class BooksController {
                     PBook b = gson.fromJson(gsonString, PBook.class);
                     this.books.put(bookToken, b);
                 }
+
+                System.out.println(gsonString);
             }
         }
 
         System.out.println("readDataBaseBook");
     }
 
-    public boolean addMember(Book b) {
+    public boolean addBook(Book b) {
         if (this.books.containsKey(b.get_bookToken())) {
             return false;
         }
@@ -162,6 +166,22 @@ public class BooksController {
                 return gson.fromJson(CopyBookString, PBook.class);
         }
         return null;
+    }
+
+    public Book FindBook(String bookToken) {
+        return this.books.getOrDefault(bookToken, null);
+    }
+
+    public Book createBook(String title, String description, String bookForm) {
+        BookInfo info = new BookInfo(title, description);
+        Book output;
+
+        boolean isPBook = BookForm.getValueOrDefault(bookForm, BookForm.pbook) == BookForm.pbook;
+
+        output = (isPBook) ? new PBook(info) : new EBook(info);
+
+        addBook(output);
+        return output;
     }
 
 }

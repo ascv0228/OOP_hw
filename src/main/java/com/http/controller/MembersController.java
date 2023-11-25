@@ -58,33 +58,26 @@ public class MembersController {
         }
     }
 
-    public RegularMember createRegularMember(String name) {
-        MemberInfo info = new MemberInfo(name);
+    public RegularMember createRegularMember(MemberInfo info) {
         RegularMember output = new RegularMember(info);
         addMember(output);
         return output;
     }
 
-    public AdminMember createAdminMember(String name) {
-        MemberInfo info = new MemberInfo(name);
+    public AdminMember createAdminMember(MemberInfo info) {
         AdminMember output = new AdminMember(info);
         addMember(output);
         return output;
     }
 
     public boolean addMember(Member m) {
-        System.out.println("A");
         if (this.members.containsKey(m.get_userToken())) {
             return false;
         }
-        System.out.println("B");
         if (addDataBaseMember(m)) {
-            System.out.println("C");
             this.members.put(m.get_userToken(), m);
-            System.out.println("D");
             return true;
         }
-        System.out.println("E");
         return false;
     }
 

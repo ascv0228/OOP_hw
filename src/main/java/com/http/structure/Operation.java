@@ -5,5 +5,14 @@ public enum Operation {
     CheckOut,
     Add,
     Delete,
-    ReadOnline
+    ReadOnline,
+    UnModify;
+
+    public static Operation getValueOrDefault(String name, Operation defaultValue) {
+        try {
+            return Operation.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            return defaultValue;
+        }
+    }
 }

@@ -20,6 +20,7 @@ public abstract class Book {
         this.bookInfo = bookInfo;
         this.bookForm = bookForm;
         this.bookStatus = bookStatus;
+        this.records = new ArrayList<>();
     }
 
     public Book(String bookToken, BookInfo bookInfo, BookForm bookForm) {
@@ -62,7 +63,7 @@ public abstract class Book {
     }
 
     public void AddOperationRecord(OperationRecord op) {
-        if (this.records.size() == 0) {
+        if (this.records == null) {
             this.records = new ArrayList<>();
         }
         this.records.add(op);

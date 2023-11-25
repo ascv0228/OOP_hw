@@ -1,21 +1,14 @@
 package com.http;
 
 import com.sun.net.httpserver.HttpServer;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
-
+import org.reflections.Reflections;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.Set;
+import java.util.Iterator;
 
 import com.http.controller.BaseController;
-import com.http.controller.BooksController;
-import com.http.controller.MembersController;
-import com.http.handlers.BaseHandler;
-import com.http.handlers.CreateAccountHandler;
-import com.http.handlers.HelloHandler;
-import com.http.handlers.LoginAccountHandler;
-import com.http.plugins.AdminMember;
+import com.http.handlers.*;
 import com.mongodb.client.MongoClient;
 
 public class SimpleHttpServer {
@@ -24,24 +17,30 @@ public class SimpleHttpServer {
     private static BaseController baseController;
 
     public static void main(String[] args) throws IOException {
-        // 创建HttpServer实例并绑定到指定端口
-
         MongoClient mongoClient = MongodbConnect.connectToMongoDB();
         SimpleHttpServer.baseController = new BaseController(mongoClient);
         System.out.println("run: " + SimpleHttpServer.class.getName());
 
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
-        // mController.addDataBaseMember(new AdminMember());
 
-        // 创建上下文路径，将路径映射到处理程序
-        createContext(server, new HelloHandler());
-        createContext(server, new CreateAccountHandler());
-        createContext(server, new LoginAccountHandler());
+        Reflections reflections = new Reflections("com.http.handlers");
+        // Get all classes in the package
+        try {
+            Set<Class<? extends BaseHandler>> allClasses = reflections.getSubTypesOf(BaseHandler.class);
 
-        // 启动服务器
-        server.setExecutor(null); // 使用默认的executor
+            Iterator<Class<? extends BaseHandler>> iterator = allClasses.iterator();
+            while (iterator.hasNext()) {
+                Class<? extends BaseHandler> element = iterator.next();
+                createContext(server, element.getDeclaredConstructor().newInstance());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Start Server
+        server.setExecutor(null); // default executor
         server.start();
-        // mongoClient.close();
+        mongoClient.close();
     }
 
     private static void createContext(HttpServer server, BaseHandler handler) {

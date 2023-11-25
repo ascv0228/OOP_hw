@@ -11,6 +11,11 @@ import java.util.ArrayList;
 public class EBook extends Book {
     private List<String> allowedTokens;
 
+    public EBook(BookInfo bookInfo) {
+        super(bookInfo, BookForm.ebook);
+        this.allowedTokens = new ArrayList<>();
+    }
+
     public EBook(String bookToken, BookInfo bookInfo) {
         super(bookToken, bookInfo, BookForm.ebook);
         this.allowedTokens = new ArrayList<>();

@@ -2,18 +2,42 @@ package com.http.handlers;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 import com.sun.net.httpserver.HttpHandler;
-import com.http.controller.BaseController;
 import com.sun.net.httpserver.HttpExchange;
 
 public abstract class BaseHandler implements HttpHandler {
     protected String path;
+    protected String responseFormat;
+    protected List<String> parameters;
+    protected Map<String, String> options;
 
     public String get_path() {
         return this.path;
+    }
+
+    public List<String> get_parameters() {
+        return this.parameters == null ? List.of("") : this.parameters;
+    }
+
+    public Map<String, String> get_options() {
+        return this.options == null ? new HashMap<>() : this.options;
+    }
+
+    protected String sendErrorResponse() {
+        System.out.println("sendErrorResponse");
+        return "Necessary URL Parameter:\n" + String.join(", ", get_parameters())
+                + "\n\n" + "Optional URL Parameter:\n" + String.join(", ", new ArrayList<>(get_options().keySet()));
+    }
+
+    protected boolean checkParameter(Map<String, String> get_parameters) {
+        if (this.parameters == null)
+            return true;
+        return get_parameters.keySet().containsAll(this.parameters);
     }
 
     @Override
@@ -32,6 +56,10 @@ public abstract class BaseHandler implements HttpHandler {
                 }
             }
         }
+        if (this.options != null)
+            for (String key : this.options.keySet()) {
+                params.putIfAbsent(key, this.options.get(key));
+            }
         return params;
     }
 

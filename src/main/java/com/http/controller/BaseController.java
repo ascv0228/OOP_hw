@@ -5,10 +5,12 @@ import com.google.gson.GsonBuilder;
 import com.http.plugins.Book;
 import com.http.plugins.EBook;
 import com.http.plugins.Member;
+import com.http.plugins.MemberInfo;
 import com.http.plugins.OperationRecord;
 import com.http.plugins.PBook;
 import com.http.plugins.RegularMember;
 import com.http.structure.BookForm;
+import com.http.structure.Gender;
 import com.http.structure.Operation;
 import com.http.structure.Permission;
 import com.mongodb.client.MongoClient;
@@ -25,8 +27,21 @@ public class BaseController {
         bController = new BooksController(mongoClient);
     }
 
+    public boolean TODO_ExecuteOperation(String userToken, String bookToken, Operation op) {
+        Member member = mController.FindMember(userToken);
+        Book book = bController.FindBook(bookToken);
+        return Is_SuccessExecuteOperation(member, book, op);
+    }
+
+    public boolean TODO_ExecuteOperation(String userToken, String bookToken, String opString) {
+        Operation op = Operation.getValueOrDefault(opString, Operation.UnModify);
+        return TODO_ExecuteOperation(userToken, bookToken, op);
+    }
+
     public boolean Is_SuccessExecuteOperation(Member member, Book book, Operation op) {
         boolean flag = true;
+        if (member == null || book == null || op == null)
+            return false;
         BookForm bookForm = book.get_bookForm();
         String CopyBookString = book.toString();
 
@@ -38,21 +53,28 @@ public class BaseController {
             case CheckIn:
                 if (!hasEligible_CheckInBook(member, book))
                     return false;
+                break;
             case CheckOut:
                 if (!hasEligible_CheckOutBook(member, book))
                     return false;
+                break;
             case Add:
                 if (!hasEligible_AddBook(member, book))
                     return false;
+                break;
             case Delete:
                 if (!hasEligible_DeleteBook(member, book))
                     return false;
+                break;
             case ReadOnline:
                 if (!hasEligible_ReadOnlineBook(member, book))
                     return false;
+                break;
+            case UnModify:
+                return true;
 
             default:
-                break;
+                return false;
         }
         flag &= ExecuteOperation(member, book, record);
         if (!flag) {
@@ -60,6 +82,7 @@ public class BaseController {
         } else {
             handleSuccess_callback(member, book, record);
         }
+        System.out.println("flag: " + flag);
         return flag;
     }
 
@@ -133,14 +156,24 @@ public class BaseController {
         return false;
     }
 
-    public String createRegularMember(String name) {
+    public String createMember(String name, String authority, String gender) {
+        MemberInfo info = new MemberInfo(name, gender);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson.toJson(mController.createRegularMember(name));
+
+        return gson.toJson(
+                (authority == "admin") ? mController.createAdminMember(info) : mController.createRegularMember(info));
     }
 
-    public String createAdminMember(String name) {
+    public String addBook(String userToken, String title, String description, String bookForm) {
+        if (!get_isAdmin(userToken))
+            return "Failure";
+
+        Book book = bController.createBook(title, description, bookForm);
+        boolean result = TODO_ExecuteOperation(userToken, book.get_bookToken(), Operation.Add);
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson.toJson(mController.createAdminMember(name));
+        return result ? gson.toJson(book) : "Failure";
+
     }
 
     public String get_LoginAccount(String userToken) {
@@ -149,4 +182,25 @@ public class BaseController {
         return m == null ? "Failure" : gson.toJson(m);
     }
 
+    public String get_BookInfo(String bookToken) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Book m = bController.FindBook(bookToken);
+        return m == null ? "Failure" : gson.toJson(m);
+    }
+
+    public boolean get_isAdmin(String userToken) {
+        return mController.FindMember(userToken).isAdmin();
+    }
+
+    public boolean get_isRegular(String userToken) {
+        return mController.FindMember(userToken).isRegular();
+    }
+
+    public boolean get_isPBook(String bookToken) {
+        return bController.FindBook(bookToken).isPBook();
+    }
+
+    public boolean get_isEBook(String bookToken) {
+        return bController.FindBook(bookToken).isEBook();
+    }
 }

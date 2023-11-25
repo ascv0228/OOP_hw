@@ -1,11 +1,7 @@
 package com.http.plugins;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.http.structure.Permission;
-import com.http.structure.Operation;
 
 public class RegularMember extends Member {
 

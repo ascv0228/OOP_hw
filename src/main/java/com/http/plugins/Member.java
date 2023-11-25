@@ -18,6 +18,7 @@ public abstract class Member {
         this.userToken = userToken;
         this.memberInfo = memberInfo;
         this.permission = permission;
+        this.records = new ArrayList<>();
     }
 
     protected Member(MemberInfo memberInfo, Permission permission) {
@@ -50,7 +51,7 @@ public abstract class Member {
     }
 
     public void AddOperationRecord(OperationRecord op) {
-        if (this.records.size() == 0) {
+        if (this.records == null) {
             this.records = new ArrayList<>();
         }
         this.records.add(op);

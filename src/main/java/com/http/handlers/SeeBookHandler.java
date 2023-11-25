@@ -7,23 +7,24 @@ import java.util.Map;
 import com.http.SimpleHttpServer;
 import com.sun.net.httpserver.HttpExchange;
 
-public final class LoginAccountHandler extends BaseHandler {
+public final class SeeBookHandler extends BaseHandler {
 
-    public LoginAccountHandler() {
-        this.path = "/loginAccount";
-        this.parameters = List.of("userToken");
+    public SeeBookHandler() {
+        this.path = "/seeBook";
+        this.parameters = List.of("bookToken");
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        // 处理HTTP请求
 
         Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
         if (!checkParameter(params)) {
             String response = sendErrorResponse();
             sendResponse(exchange, response);
         }
-        String member = SimpleHttpServer.getBaseController().get_LoginAccount(params.get("userToken"));
-        String response = "Login member:\n" + member;
+        String book = SimpleHttpServer.getBaseController().get_BookInfo(params.get("bookToken"));
+        String response = "BookInfo:\n" + book;
 
         sendResponse(exchange, response);
     }
