@@ -10,7 +10,6 @@ import com.http.plugins.OperationRecord;
 import com.http.plugins.PBook;
 import com.http.plugins.RegularMember;
 import com.http.structure.BookForm;
-import com.http.structure.Gender;
 import com.http.structure.Operation;
 import com.http.structure.Permission;
 import com.mongodb.client.MongoClient;

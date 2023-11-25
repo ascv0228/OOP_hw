@@ -41,7 +41,7 @@ public class MembersController {
         try (MongoCursor<Document> cursor = documents.iterator()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
-                String userToken = document.getString("memberToken");
+                String userToken = document.getString("userToken");
                 Permission pm = Permission.values()[document.getInteger("permission")];
                 String gsonString = document.getString("gson");
                 if (pm == Permission.Administrative) {
@@ -55,6 +55,7 @@ public class MembersController {
                 System.out.println("userToken: " + userToken);
             }
         }
+        System.out.println("=============readDataBaseMember=============");
     }
 
     public RegularMember createRegularMember(MemberInfo info) {
@@ -85,7 +86,7 @@ public class MembersController {
         try {
             Gson gson = new Gson();
             String jsonString = gson.toJson(m);
-            Document document = new Document("memberToken", m.get_userToken())
+            Document document = new Document("userToken", m.get_userToken())
                     .append("permission", m.get_permission().ordinal())
                     .append("gson", jsonString);
 
@@ -113,10 +114,10 @@ public class MembersController {
     private boolean updateDataBaseMember(Member m) {
         MongoCollection<Document> collection = get_collection();
         try {
-            Document filter = new Document("memberToken", m.get_userToken());
+            Document filter = new Document("userToken", m.get_userToken());
             Gson gson = new Gson();
             String jsonString = gson.toJson(m);
-            Document document = new Document("memberToken", m.get_userToken())
+            Document document = new Document("userToken", m.get_userToken())
                     .append("permission", m.get_permission().ordinal())
                     .append("gson", jsonString);
 

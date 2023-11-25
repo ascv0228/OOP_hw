@@ -40,7 +40,7 @@ public class SimpleHttpServer {
         // Start Server
         server.setExecutor(null); // default executor
         server.start();
-        mongoClient.close();
+        // mongoClient.close();
     }
 
     private static void createContext(HttpServer server, BaseHandler handler) {
