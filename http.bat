@@ -1,0 +1,2 @@
+@REM mvn clean install & mvn package & java -jar target/OOP_hw-1.0-SNAPSHOT-jar-with-dependencies.jar com.http.SimpleHttpServer
+mvn clean package && java --add-opens java.base/java.time=ALL-UNNAMED -jar target/OOP_hw-1.0-SNAPSHOT-jar-with-dependencies.jar com.http.SimpleHttpServer
