@@ -13,6 +13,10 @@
             width: 500px;
             /* Adjust the height as needed */
         }
+
+        .longBox {
+            width: 500px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -25,7 +29,7 @@
     </button><br><br>
     <form id="myForm">
         <label>Enter UserToken</label><br>
-        <input type='text' id='userToken' placeholder='Enter your userToken'><br><br>
+        <input type='text' class="longBox" id='userToken' placeholder='Enter your userToken'><br><br>
         <button type="button" onclick="handleSubmit()">Submit</button><br><br>
 
         <textarea type="text" id="responseTextBox" placeholder="Response will appear here"></textarea><br>
@@ -34,7 +38,10 @@
         function handleSubmit() {
             event.preventDefault();
             const array1 = ["userToken"]
-            if (!array1.every(checkText)) alert("Please check input");
+            if (!array1.every(checkText)) {
+                alert("Please check input");
+                return;
+            }
             var inputValue = outputInputValue(array1);
             console.log(inputValue)
 
