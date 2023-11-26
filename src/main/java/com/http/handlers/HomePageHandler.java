@@ -3,9 +3,6 @@ package com.http.handlers;
 import java.io.IOException;
 import com.sun.net.httpserver.HttpExchange;
 
-import java.util.List;
-import java.util.Map;
-
 public final class HomePageHandler extends BaseHandler {
 
     public HomePageHandler() {

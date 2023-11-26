@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>Library System Create Account</title>
     <style>
         #responseTextBox {
@@ -35,6 +36,7 @@
             const array1 = ["userToken"]
             if (!array1.every(checkText)) alert("Please check input");
             var inputValue = outputInputValue(array1);
+            console.log(inputValue)
 
             $.ajax({
                 type: "GET",

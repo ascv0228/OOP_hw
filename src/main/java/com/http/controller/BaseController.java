@@ -158,9 +158,9 @@ public class BaseController {
     public String createMember(String name, String authority, String gender) {
         MemberInfo info = new MemberInfo(name, gender);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
         return gson.toJson(
-                (authority == "admin") ? mController.createAdminMember(info) : mController.createRegularMember(info));
+                (authority.equals("admin")) ? mController.createAdminMember(info)
+                        : mController.createRegularMember(info));
     }
 
     public String addBook(String userToken, String title, String description, String bookForm) {

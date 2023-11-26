@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -84,33 +83,3 @@ public abstract class BaseHandler implements HttpHandler {
         return Files.readAllBytes(path);
     }
 }
-
-// '<form id="myForm">
-// <input type="text" id="responseTextBox" placeholder="Response will appear
-// here">
-// <button type="button" onclick="sendRequest()">Click Me</button>
-// </form>
-
-// <script>
-// function sendRequest() {
-// // Get the value from the text box
-// var inputValue = $("#responseTextBox").val();
-
-// // Make an AJAX request (POST or GET) to the server
-// $.ajax({
-// type: "POST", // or "GET" depending on your needs
-// url: "/your-server-endpoint",
-// data: { input: inputValue },
-// success: function(response) {
-// // Update the text box with the response
-// $("#responseTextBox").val(response);
-// },
-// error: function(error) {
-// console.error("Error:", error);
-// }
-// });
-// }
-// </script>
-
-// </body>
-// </html>'

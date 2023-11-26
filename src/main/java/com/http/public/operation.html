@@ -8,9 +8,15 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>Library System Operation</title>
     <style>
-        #responseTextBox {
+        #responseMemberTextBox {
             height: 500px;
-            width: 500px;
+            width: 350px;
+            /* Adjust the height as needed */
+        }
+
+        #responseBookTextBox {
+            height: 500px;
+            width: 350px;
             /* Adjust the height as needed */
         }
     </style>
@@ -37,7 +43,8 @@
         </select><br><br>
         <button type="button" onclick="handleSubmit()">Submit</button><br><br>
 
-        <textarea id="responseTextBox" placeholder="Response will appear here"></textarea>
+        <textarea id="responseMemberTextBox" placeholder="Response will appear here"></textarea>
+        <textarea id="responseBookTextBox" placeholder="Response will appear here"></textarea>
 
     </form>
 
@@ -52,7 +59,19 @@
                 type: "GET",
                 url: '/operation?' + inputValue,
                 success: function (response) {
-                    $("#responseTextBox").val(response);
+                    let index = response.indexOf("Book Info");
+
+                    if (index !== -1) {
+                        // Extract string1 and string2 based on the index
+                        let string1 = response.substring(0, index).trim();  // "aaa bbb"
+                        let string2 = response.substring(index).trim();    // "ccc ddd"
+
+
+                        $("#responseMemberTextBox").val(string1);
+                        $("#responseBookTextBox").val(string2);
+                    } else {
+                        $("#responseMemberTextBox").val(response);
+                    }
                 },
                 error: function (error) {
                     console.error("Error:", error);

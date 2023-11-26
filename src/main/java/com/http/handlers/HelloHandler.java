@@ -5,9 +5,6 @@ import com.sun.net.httpserver.HttpExchange;
 
 import java.util.List;
 import java.util.Map;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public final class HelloHandler extends BaseHandler {
 

@@ -44,12 +44,13 @@
             if (!array1.every(checkText)) alert("Please check input");
 
             var inputValue = outputInputValue(array1);
+            console.log(inputValue)
 
             // Make an AJAX request (POST or GET) to the server
             $.ajax({
                 type: "GET", // or "GET" depending on your needs
                 // url: '/hello?name=' + inputValue,
-                url: '/seeBook?' + inputValue,
+                url: '/addBook?' + inputValue,
                 success: function (response) {
                     // Update the text box with the response
                     $("#responseTextBox").val(response);
