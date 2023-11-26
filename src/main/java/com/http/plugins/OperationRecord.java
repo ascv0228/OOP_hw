@@ -28,10 +28,6 @@ public class OperationRecord {
                 ZonedDateTime.now().withZoneSameInstant(java.time.ZoneOffset.ofHours(8)));
     }
 
-    public String get_timeString() {
-        return this.timeString;
-    }
-
     public String get_userToken() {
         return this.userToken;
     }
@@ -42,6 +38,14 @@ public class OperationRecord {
 
     public Operation get_operation() {
         return this.operation;
+    }
+
+    public long get_timeValue() {
+        return this.timeValue;
+    }
+
+    public String get_timeString() {
+        return this.timeString;
     }
 
 }
