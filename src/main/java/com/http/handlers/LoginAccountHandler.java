@@ -33,21 +33,3 @@ public final class LoginAccountHandler extends BaseHandler {
     }
 
 }
-
-// "<html><body>"
-// + "<h2>Library System Login</h2>"
-// + "<form method='get' action='/loginAccount' onsubmit='return
-// handleLogin()'>"
-// + "UserToken: <input type='text' name='userToken'><br>"
-// + "<input type='submit' value='Login'>"
-// + "</form>"
-// + "<script>"
-// + "function handleLogin() {"
-// + " event.preventDefault();"
-// + " var userToken = document.getElementsByName('userToken')[0].value;"
-// + " window.location.href = '/loginAccount?userToken=' +
-// encodeURIComponent(userToken);;"
-// + " return false; // Returning true will submit the form"
-// + "}"
-// + "</script>"
-// + "</body></html>"
