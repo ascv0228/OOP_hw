@@ -1,17 +1,37 @@
 package com.http.plugins;
 
+import java.util.List;
+
+import com.http.structure.BookGenre;
+import com.http.structure.Language;
+
 public class BookInfo {
     private String title;
     private String description;
+    private Language language;
+    private List<BookGenre> genres;
 
-    public BookInfo(String title, String description){
+    public BookInfo(String title, String description) {
         this.title = title;
         this.description = description;
     }
-    public String get_title(){
+
+    public BookInfo(String title, String description, Language language, List<BookGenre> genres) {
+        this(title, description);
+        this.language = language;
+        this.genres = genres;
+    }
+
+    public BookInfo(String title, String description, String language, List<String> genres) {
+        this(title, description, Language.getValueOrDefault(language, Language.CHINESE),
+                BookGenre.ListStringToBookGenre(genres));
+    }
+
+    public String get_title() {
         return this.title;
     }
-    public String get_description(){
+
+    public String get_description() {
         return this.description;
     }
 }
