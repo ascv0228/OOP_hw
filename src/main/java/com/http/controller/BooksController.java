@@ -16,6 +16,7 @@ import com.http.plugins.PBook;
 import com.http.structure.BookForm;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.bson.Document;
 
@@ -165,13 +166,14 @@ public class BooksController {
         return this.books.getOrDefault(bookToken, null);
     }
 
-    public Book createBook(String title, String description, String bookForm) {
-        BookInfo info = new BookInfo(title, description);
+    public Book createBook(String title, String description, String bookForm, String language,
+            List<String> genres, String location) {
+        BookInfo info = new BookInfo(title, description, language, genres);
         Book output;
 
         boolean isPBook = BookForm.getValueOrDefault(bookForm, BookForm.pbook) == BookForm.pbook;
 
-        output = (isPBook) ? new PBook(info) : new EBook(info);
+        output = (isPBook) ? new PBook(info, location) : new EBook(info);
 
         addBook(output);
         return output;

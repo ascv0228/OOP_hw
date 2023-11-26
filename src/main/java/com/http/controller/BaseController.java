@@ -12,6 +12,7 @@ import com.http.plugins.RegularMember;
 import com.http.structure.BookForm;
 import com.http.structure.Operation;
 import com.http.structure.Permission;
+import java.util.List;
 import com.mongodb.client.MongoClient;
 
 public class BaseController {
@@ -163,11 +164,12 @@ public class BaseController {
                         : mController.createRegularMember(info));
     }
 
-    public String addBook(String userToken, String title, String description, String bookForm) {
+    public String addBook(String userToken, String title, String description, String bookForm, String language,
+            List<String> genres, String location) {
         if (!get_isAdmin(userToken))
             return "Failure";
 
-        Book book = bController.createBook(title, description, bookForm);
+        Book book = bController.createBook(title, description, bookForm, language, genres, location);
         boolean result = TODO_ExecuteOperation(userToken, book.get_bookToken(), Operation.Add);
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
