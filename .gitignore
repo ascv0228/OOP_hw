@@ -9,4 +9,5 @@ logs
 
 
 target/
+test/
 # package-lock.json
