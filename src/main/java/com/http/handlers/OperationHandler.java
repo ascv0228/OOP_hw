@@ -11,6 +11,7 @@ public final class OperationHandler extends BaseHandler {
 
     public OperationHandler() {
         this.path = "/operation";
+        this.htmlPath = "operation.html";
         this.parameters = List.of("userToken", "bookToken", "operation");
         this.responseFormat = "Operation Handler\n" +
                 "Member Info\n" +
@@ -24,6 +25,9 @@ public final class OperationHandler extends BaseHandler {
         // 处理HTTP请求
 
         Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
+        if (params.size() == 0) {
+            sendHtml(exchange);
+        }
         if (!checkParameter(params)) {
             String response = sendErrorResponse();
             sendResponse(exchange, response);

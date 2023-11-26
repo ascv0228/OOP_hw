@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>Library System Operation</title>
+    <style>
+        #responseTextBox {
+            height: 500px;
+            width: 500px;
+            /* Adjust the height as needed */
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Library System Operation</h2>
+    <button id="goHomeButton" onclick="window.location.href = '/'">
+        <i class="fas fa-home"></i> Home
+    </button><br><br>
+    <form id="myForm">
+        <label>Enter userToken:</label><br>
+        <input type="text" id="userToken" placeholder="Enter your userToken"><br><br>
+        <label>Enter bookToken:</label><br>
+        <input type="text" id="bookToken" placeholder="Enter bookToken"><br><br>
+
+        <label for="operation">Select your operation:</label><br>
+        <select id="operation">
+            <option value="CheckIn">CheckIn</option>
+            <option value="CheckOut">CheckOut</option>
+            <option value="Delete">Delete [only admin]</option>
+            <option value="ReadOnline">ReadOnline [only E-Book]</option>
+        </select><br><br>
+        <button type="button" onclick="handleSubmit()">Submit</button><br><br>
+
+        <textarea id="responseTextBox" placeholder="Response will appear here"></textarea>
+
+    </form>
+
+    <script>
+        function handleSubmit() {
+            const array1 = ["userToken", "bookToken", "operation"];
+            if (!array1.every(checkText)) alert("Please check input");
+
+            var inputValue = outputInputValue(array1);
+
+            $.ajax({
+                type: "GET",
+                url: '/operation?' + inputValue,
+                success: function (response) {
+                    $("#responseTextBox").val(response);
+                },
+                error: function (error) {
+                    console.error("Error:", error);
+                }
+            });
+        }
+        function checkText(id) {
+            var inputValue = $("#" + id).val();
+            return (inputValue.trim() !== "");
+        }
+        function outputInputValue(ids) {
+            var values = ids.map(id => id + "=" + $("#" + id).val());
+            return values.join("&");
+        }
+    </script>
+
+</body>
+
+</html>

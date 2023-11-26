@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>Hello</title>
+    <style>
+        #responseTextBox {
+            height: 500px;
+            width: 500px;
+            /* Adjust the height as needed */
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Hello</h2>
+    <button id="goHomeButton" onclick="window.location.href = '/'">
+        <i class="fas fa-home"></i> Home
+    </button><br><br>
+    <form id="myForm">
+        <label>Enter name:</label><br>
+        <input type='text' id='name' placeholder='Enter your name'><br><br>
+        <button type="button" onclick="handleSubmit()">Submit</button><br><br>
+        <textarea type="text" id="responseTextBox" placeholder="Response will appear here"></textarea><br>
+    </form>
+
+    <script>
+        function handleSubmit() {
+            const array1 = ["name"];
+            if (!array1.every(checkText)) alert("Please check input");
+
+            var inputValue = outputInputValue(array1);
+
+            // Make an AJAX request (POST or GET) to the server
+            $.ajax({
+                type: "GET", // or "GET" depending on your needs
+                url: '/hello?' + inputValue,
+                success: function (response) {
+                    // Update the text box with the response
+                    $("#responseTextBox").val(response);
+                },
+                error: function (error) {
+                    console.error("Error:", error);
+                }
+            });
+        }
+        function checkText(id) {
+            var inputValue = $("#" + id).val();
+            return (inputValue.trim() !== "");
+        }
+        function outputInputValue(ids) {
+            var values = ids.map(id => id + "=" + $("#" + id).val());
+            return values.join("&");
+        }
+    </script>
+
+</body>
+
+</html>

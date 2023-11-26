@@ -2,6 +2,9 @@ package com.http.handlers;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,9 +15,10 @@ import com.sun.net.httpserver.HttpExchange;
 
 public abstract class BaseHandler implements HttpHandler {
     protected String path;
+    protected String htmlPath;
+    private final static String htmlRootPath = "src\\main\\java\\com\\http\\public\\";
     protected String responseFormat;
     protected List<String> parameters;
-    protected Map<String, String> options;
 
     public String get_path() {
         return this.path;
@@ -24,14 +28,9 @@ public abstract class BaseHandler implements HttpHandler {
         return this.parameters == null ? List.of("") : this.parameters;
     }
 
-    public Map<String, String> get_options() {
-        return this.options == null ? new HashMap<>() : this.options;
-    }
-
     protected String sendErrorResponse() {
         System.out.println("sendErrorResponse");
-        return "Necessary URL Parameter:\n" + String.join(", ", get_parameters())
-                + "\n\n" + "Optional URL Parameter:\n" + String.join(", ", new ArrayList<>(get_options().keySet()));
+        return "Necessary URL Parameter:\n" + String.join(", ", get_parameters());
     }
 
     protected boolean checkParameter(Map<String, String> get_parameters) {
@@ -56,11 +55,13 @@ public abstract class BaseHandler implements HttpHandler {
                 }
             }
         }
-        if (this.options != null)
-            for (String key : this.options.keySet()) {
-                params.putIfAbsent(key, this.options.get(key));
-            }
+
         return params;
+    }
+
+    protected void sendHtml(HttpExchange exchange) throws IOException {
+        byte[] fileBytes = readFileBytes(BaseHandler.htmlRootPath + this.htmlPath);
+        sendResponse(exchange, fileBytes);
     }
 
     protected void sendResponse(HttpExchange exchange, String response) throws IOException {
@@ -69,4 +70,47 @@ public abstract class BaseHandler implements HttpHandler {
             os.write(response.getBytes());
         }
     }
+
+    protected void sendResponse(HttpExchange exchange, byte[] response) throws IOException {
+        exchange.getResponseHeaders().set("Content-Type", "text/html");
+        exchange.sendResponseHeaders(200, response.length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(response);
+        }
+    }
+
+    protected static byte[] readFileBytes(String filePath) throws IOException {
+        Path path = Paths.get(filePath);
+        return Files.readAllBytes(path);
+    }
 }
+
+// '<form id="myForm">
+// <input type="text" id="responseTextBox" placeholder="Response will appear
+// here">
+// <button type="button" onclick="sendRequest()">Click Me</button>
+// </form>
+
+// <script>
+// function sendRequest() {
+// // Get the value from the text box
+// var inputValue = $("#responseTextBox").val();
+
+// // Make an AJAX request (POST or GET) to the server
+// $.ajax({
+// type: "POST", // or "GET" depending on your needs
+// url: "/your-server-endpoint",
+// data: { input: inputValue },
+// success: function(response) {
+// // Update the text box with the response
+// $("#responseTextBox").val(response);
+// },
+// error: function(error) {
+// console.error("Error:", error);
+// }
+// });
+// }
+// </script>
+
+// </body>
+// </html>'

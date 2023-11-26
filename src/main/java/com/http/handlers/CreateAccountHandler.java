@@ -12,19 +12,17 @@ public final class CreateAccountHandler extends BaseHandler {
 
     public CreateAccountHandler() {
         this.path = "/createAccount";
-        this.parameters = List.of("name");
-        this.options = new HashMap<String, String>() {
-            {
-                put("authority", "admin");
-                put("gender", "Male");
-            }
-        };
+        this.htmlPath = "createAccount.html";
+        this.parameters = List.of("name", "authority", "gender");
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         // 处理HTTP请求
         Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
+        if (params.size() == 0) {
+            sendHtml(exchange);
+        }
         if (!checkParameter(params)) {
             String response = sendErrorResponse();
             sendResponse(exchange, response);

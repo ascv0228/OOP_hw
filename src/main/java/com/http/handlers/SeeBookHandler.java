@@ -11,6 +11,7 @@ public final class SeeBookHandler extends BaseHandler {
 
     public SeeBookHandler() {
         this.path = "/seeBook";
+        this.htmlPath = "seeBook.html";
         this.parameters = List.of("bookToken");
     }
 
@@ -19,6 +20,9 @@ public final class SeeBookHandler extends BaseHandler {
         // 处理HTTP请求
 
         Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
+        if (params.size() == 0) {
+            sendHtml(exchange);
+        }
         if (!checkParameter(params)) {
             String response = sendErrorResponse();
             sendResponse(exchange, response);

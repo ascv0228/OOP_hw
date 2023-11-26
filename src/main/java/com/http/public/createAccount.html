@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>Library System Create Account</title>
+    <style>
+        #responseTextBox {
+            height: 500px;
+            width: 500px;
+            /* Adjust the height as needed */
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Library System Create Account</h2>
+    <button id="goHomeButton" onclick="window.location.href = '/'">
+        <i class="fas fa-home"></i> Home
+    </button><br><br>
+    <form id="myForm">
+        <label>Enter Name</label><br>
+        <input type='text' id='name' placeholder='Enter your name'><br><br>
+        <label for="authority">Select your authority:</label><br>
+        <select id="authority">
+            <option value="admin">Admin</option>
+            <option value="regular">Regular</option>
+        </select><br><br>
+        <label for="gender">Select your authority:</label><br>
+        <select id="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select><br><br>
+        <button type="button" onclick="handleSubmit()">Submit</button><br><br>
+        <textarea type="text" id="responseTextBox" placeholder="Response will appear here"></textarea><br>
+    </form>
+
+    <script>
+        function handleSubmit() {
+            const array1 = ["name", "authority", "gender"];
+            if (!array1.every(checkText)) alert("Please check input");
+
+            var inputValue = outputInputValue(array1);
+
+            $.ajax({
+                type: "GET",
+                url: '/createAccount?' + inputValue,
+                success: function (response) {
+                    $("#responseTextBox").val(response);
+                },
+                error: function (error) {
+                    console.error("Error:", error);
+                }
+            });
+        }
+        function checkText(id) {
+            var inputValue = $("#" + id).val();
+            return (inputValue.trim() !== "");
+        }
+        function outputInputValue(ids) {
+            var values = ids.map(id => id + "=" + $("#" + id).val());
+            return values.join("&");
+        }
+    </script>
+</body>
+
+</html>

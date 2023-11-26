@@ -11,6 +11,7 @@ public final class LoginAccountHandler extends BaseHandler {
 
     public LoginAccountHandler() {
         this.path = "/loginAccount";
+        this.htmlPath = "loginAccount.html";
         this.parameters = List.of("userToken");
     }
 
@@ -18,6 +19,9 @@ public final class LoginAccountHandler extends BaseHandler {
     public void handle(HttpExchange exchange) throws IOException {
 
         Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
+        if (params.size() == 0) {
+            sendHtml(exchange);
+        }
         if (!checkParameter(params)) {
             String response = sendErrorResponse();
             sendResponse(exchange, response);
@@ -29,3 +33,21 @@ public final class LoginAccountHandler extends BaseHandler {
     }
 
 }
+
+// "<html><body>"
+// + "<h2>Library System Login</h2>"
+// + "<form method='get' action='/loginAccount' onsubmit='return
+// handleLogin()'>"
+// + "UserToken: <input type='text' name='userToken'><br>"
+// + "<input type='submit' value='Login'>"
+// + "</form>"
+// + "<script>"
+// + "function handleLogin() {"
+// + " event.preventDefault();"
+// + " var userToken = document.getElementsByName('userToken')[0].value;"
+// + " window.location.href = '/loginAccount?userToken=' +
+// encodeURIComponent(userToken);;"
+// + " return false; // Returning true will submit the form"
+// + "}"
+// + "</script>"
+// + "</body></html>"
