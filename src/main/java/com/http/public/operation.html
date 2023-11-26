@@ -51,7 +51,10 @@
     <script>
         function handleSubmit() {
             const array1 = ["userToken", "bookToken", "operation"];
-            if (!array1.every(checkText)) alert("Please check input");
+            if (!array1.every(checkText)) {
+                alert("Please check input");
+                return;
+            }
 
             var inputValue = outputInputValue(array1);
 
