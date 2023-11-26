@@ -13,6 +13,10 @@
             width: 500px;
             /* Adjust the height as needed */
         }
+
+        .longBox {
+            width: 500px;
+        }
     </style>
 </head>
 
@@ -23,7 +27,7 @@
     </button><br><br>
     <form id="myForm">
         <label>Enter Name</label><br>
-        <input type='text' id='name' placeholder='Enter your name'><br><br>
+        <input type='text' class="longBox" id='name' placeholder='Enter your name'><br><br>
         <label for="authority">Select your authority:</label><br>
         <select id="authority">
             <option value="admin">Admin</option>
@@ -41,7 +45,10 @@
     <script>
         function handleSubmit() {
             const array1 = ["name", "authority", "gender"];
-            if (!array1.every(checkText)) alert("Please check input");
+            if (!array1.every(checkText)) {
+                alert("Please check input");
+                return;
+            }
 
             var inputValue = outputInputValue(array1);
             console.log(inputValue)
