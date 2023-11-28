@@ -179,6 +179,10 @@ public class BooksController {
         return output;
     }
 
+    public Map<String, Book> get_BooksMap() {
+        return this.books;
+    }
+
 }
 // if (retrieved instanceof Child) {
 // Child retrievedChild = (Child) retrieved;

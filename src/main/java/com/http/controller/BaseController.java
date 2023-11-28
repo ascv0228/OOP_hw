@@ -12,7 +12,10 @@ import com.http.plugins.RegularMember;
 import com.http.structure.BookForm;
 import com.http.structure.Operation;
 import com.http.structure.Permission;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import com.mongodb.client.MongoClient;
 
 public class BaseController {
@@ -177,10 +180,20 @@ public class BaseController {
 
     }
 
-    public String get_LoginAccount(String userToken) {
+    public String get_MemberInfo(String userToken) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Member m = mController.FindMember(userToken);
         return m == null ? "Failure" : gson.toJson(m);
+    }
+
+    public Map<String, String> get_MemberField(String userToken) {
+        Member m = mController.FindMember(userToken);
+        if (m == null)
+            return null;
+        Map<String, String> output = new HashMap<>();
+        output.put("userToken", m.get_userToken());
+        output.put("permission", m.get_permission().toString());
+        return output;
     }
 
     public String get_BookInfo(String bookToken) {
@@ -203,5 +216,11 @@ public class BaseController {
 
     public boolean get_isEBook(String bookToken) {
         return bController.FindBook(bookToken).isEBook();
+    }
+
+    public String get_booksMap() {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Map<String, Book> m = bController.get_BooksMap();
+        return gson.toJson(m);
     }
 }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Cookie</title>
+</head>
+
+<body>
+    <h1>Read Cookie</h1>
+
+    <script>
+        // Function to read the value of a cookie by name
+        function getCookie(name) {
+            const cookieArray = document.cookie.split('; ');
+            for (const cookie of cookieArray) {
+                const [cookieName, cookieValue] = cookie.split('=');
+                if (cookieName === name) {
+                    return cookieValue;
+                }
+            }
+            return null;
+        }
+
+        // Read the value of the "myCookie" cookie
+        const userToken = getCookie('userToken');
+        if (userToken) {
+            document.write('<p>Value of userToken: ' + userToken + '</p>');
+        } else {
+            document.write('<p>myCookie not found</p>');
+        }
+    </script>
+</body>
+
+</html>

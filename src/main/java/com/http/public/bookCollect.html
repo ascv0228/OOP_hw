@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <title>Hello</title>
+    <title>Library System "SeeBook"</title>
     <style>
         #responseTextBox {
             height: 500px;
@@ -22,31 +22,23 @@
 
 <body>
 
-    <h2>Hello</h2>
+    <h2>Library System SeeBook</h2>
     <button id="goHomeButton" onclick="window.location.href = '/'">
         <i class="fas fa-home"></i> Home
     </button><br><br>
     <form id="myForm">
-        <label>Enter name:</label><br>
-        <input type='text' class="longBox" id='name' placeholder='Enter your name'><br><br>
         <button type="button" onclick="handleSubmit()">Submit</button><br><br>
         <textarea type="text" id="responseTextBox" placeholder="Response will appear here"></textarea><br>
     </form>
 
     <script>
         function handleSubmit() {
-            const array1 = ["name"];
-            if (!array1.every(checkText)) {
-                alert("Please check input");
-                return;
-            }
-
-            var inputValue = outputInputValue(array1);
 
             // Make an AJAX request (POST or GET) to the server
             $.ajax({
                 type: "GET", // or "GET" depending on your needs
-                url: '/hello?' + inputValue,
+                // url: '/hello?name=' + inputValue,
+                url: '/bookCollect',
                 success: function (response) {
                     // Update the text box with the response
                     $("#responseTextBox").val(response);
@@ -63,18 +55,6 @@
         function outputInputValue(ids) {
             var values = ids.map(id => id + "=" + $("#" + id).val());
             return values.join("&");
-        }
-        function handleLogout() {
-            $.ajax({
-                type: "GET", // or "GET" depending on your needs
-                url: '/logout',
-                success: function (response) {
-                    location.reload(true);
-                },
-                error: function (error) {
-                    console.error("Error:", error);
-                }
-            });
         }
     </script>
 

@@ -47,7 +47,7 @@
 
             $.ajax({
                 type: "GET",
-                url: '/loginAccount?' + inputValue,
+                url: '/login?' + inputValue,
                 success: function (response) {
                     $("#responseTextBox").val(response);
                 },
