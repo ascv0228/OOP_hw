@@ -159,12 +159,15 @@ public class BaseController {
         return false;
     }
 
-    public String createMember(String name, String authority, String gender) {
+    public Map<String, String> createMember(String name, String authority, String gender) {
         MemberInfo info = new MemberInfo(name, gender);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson.toJson(
-                (authority.equals("admin")) ? mController.createAdminMember(info)
-                        : mController.createRegularMember(info));
+        Member member = (authority.equals("admin")) ? mController.createAdminMember(info)
+                : mController.createRegularMember(info);
+
+        Map<String, String> output = new HashMap<>();
+        output.put(member.get_userToken(), gson.toJson(member));
+        return output;
     }
 
     public String addBook(String userToken, String title, String description, String bookForm, String language,

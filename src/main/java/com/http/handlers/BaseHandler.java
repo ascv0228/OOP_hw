@@ -114,12 +114,18 @@ public abstract class BaseHandler implements HttpHandler {
         if (!hasCorrectCookie(exchange) && !params.containsKey("userToken")) {
             return false;
         }
-        Map<String, String> fields = SimpleHttpServer.getBaseController().get_MemberField(params.get("userToken"));
+        return setCookie(exchange, params.get("userToken"));
+
+    }
+
+    protected boolean setCookie(HttpExchange exchange, String userToken) {
+
+        Map<String, String> fields = SimpleHttpServer.getBaseController().get_MemberField(userToken);
         if (fields == null) {
-            System.out.println("Error userToken: " + params.get("userToken"));
+            System.out.println("Error userToken: " + userToken);
             return false;
         }
-        exchange.getResponseHeaders().add("Set-Cookie", "userToken=" + params.get("userToken"));
+        exchange.getResponseHeaders().add("Set-Cookie", "userToken=" + userToken);
         exchange.getResponseHeaders().add("Set-Cookie", "permission=" + fields.get("permission"));
         return true;
 

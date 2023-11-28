@@ -28,8 +28,10 @@ public final class CreateAccountHandler extends BaseHandler {
             sendResponse(exchange, response);
             return;
         }
-        String member = SimpleHttpServer.getBaseController().createMember(params.get("name"), params.get("authority"),
+        Map<String, String> member = SimpleHttpServer.getBaseController().createMember(params.get("name"),
+                params.get("authority"),
                 params.get("gender"));
+
         String response = "create a member:\n" + member;
 
         sendResponse(exchange, response);

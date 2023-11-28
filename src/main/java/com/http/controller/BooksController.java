@@ -90,6 +90,7 @@ public class BooksController {
             return false;
         }
         System.out.println("addDataBaseBook");
+        System.out.println("bookToken: " + b.get_bookToken());
         return true;
     }
 

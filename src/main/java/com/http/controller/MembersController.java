@@ -95,6 +95,9 @@ public class MembersController {
             System.out.println(e.toString());
             return false;
         }
+
+        System.out.println("addDataBaseMember");
+        System.out.println("userToken: " + m.get_userToken());
         return true;
     }
 
