@@ -20,10 +20,12 @@ public final class HelloHandler extends BaseHandler {
         Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
         if (params.size() == 0) {
             sendHtml(exchange);
+            return;
         }
         if (!checkParameter(params)) {
             String response = sendErrorResponse();
             sendResponse(exchange, response);
+            return;
         }
         String response = "Hello, " + params.get("name") + "!";
 

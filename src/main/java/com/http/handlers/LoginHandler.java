@@ -7,11 +7,11 @@ import java.util.Map;
 import com.http.SimpleHttpServer;
 import com.sun.net.httpserver.HttpExchange;
 
-public final class LoginAccountHandler extends BaseHandler {
+public final class LoginHandler extends BaseHandler {
 
-    public LoginAccountHandler() {
-        this.path = "/loginAccount";
-        this.htmlPath = "loginAccount.html";
+    public LoginHandler() {
+        this.path = "/login";
+        this.htmlPath = "login.html";
         this.parameters = List.of("userToken");
     }
 
@@ -21,12 +21,15 @@ public final class LoginAccountHandler extends BaseHandler {
         Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
         if (params.size() == 0) {
             sendHtml(exchange);
+            return;
         }
         if (!checkParameter(params)) {
             String response = sendErrorResponse();
             sendResponse(exchange, response);
+            return;
         }
-        String member = SimpleHttpServer.getBaseController().get_LoginAccount(params.get("userToken"));
+        setCookie(exchange);
+        String member = SimpleHttpServer.getBaseController().get_MemberInfo(params.get("userToken"));
         String response = "Login member:\n" + member;
 
         sendResponse(exchange, response);

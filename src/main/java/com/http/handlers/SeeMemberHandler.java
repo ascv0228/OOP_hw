@@ -7,12 +7,12 @@ import java.util.Map;
 import com.http.SimpleHttpServer;
 import com.sun.net.httpserver.HttpExchange;
 
-public final class SeeBookHandler extends BaseHandler {
+public final class SeeMemberHandler extends BaseHandler {
 
-    public SeeBookHandler() {
-        this.path = "/seeBook";
-        this.htmlPath = "seeBook.html";
-        this.parameters = List.of("bookToken");
+    public SeeMemberHandler() {
+        this.path = "/seeMember";
+        this.htmlPath = "seeMember.html";
+        this.parameters = List.of("userToken");
     }
 
     @Override
@@ -29,8 +29,8 @@ public final class SeeBookHandler extends BaseHandler {
             sendResponse(exchange, response);
             return;
         }
-        String book = SimpleHttpServer.getBaseController().get_BookInfo(params.get("bookToken"));
-        String response = "BookInfo:\n" + book;
+        String member = SimpleHttpServer.getBaseController().get_MemberInfo(params.get("userToken"));
+        String response = "MemberInfo:\n" + member;
 
         sendResponse(exchange, response);
     }

@@ -26,17 +26,19 @@ public final class OperationHandler extends BaseHandler {
         Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
         if (params.size() == 0) {
             sendHtml(exchange);
+            return;
         }
         if (!checkParameter(params)) {
             String response = sendErrorResponse();
             sendResponse(exchange, response);
+            return;
         }
 
         boolean result = SimpleHttpServer.getBaseController().TODO_ExecuteOperation(
                 params.get("userToken"), params.get("bookToken"), params.get("operation"));
         String response;
         if (result) {
-            String member = SimpleHttpServer.getBaseController().get_LoginAccount(params.get("userToken"));
+            String member = SimpleHttpServer.getBaseController().get_MemberInfo(params.get("userToken"));
             String book = SimpleHttpServer.getBaseController().get_BookInfo(params.get("bookToken"));
             response = String.format(responseFormat, member, book);
         } else {

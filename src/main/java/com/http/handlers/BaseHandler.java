@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.List;
 
 import com.sun.net.httpserver.HttpHandler;
+import com.http.SimpleHttpServer;
 import com.sun.net.httpserver.HttpExchange;
 
 public abstract class BaseHandler implements HttpHandler {
@@ -81,5 +82,46 @@ public abstract class BaseHandler implements HttpHandler {
     protected static byte[] readFileBytes(String filePath) throws IOException {
         Path path = Paths.get(filePath);
         return Files.readAllBytes(path);
+    }
+
+    // Parse the cookies from the request
+    protected Map<String, String> parseCookies(String cookieHeader) {
+        System.out.println(cookieHeader);
+        Map<String, String> cookies = new HashMap<>();
+
+        if (cookieHeader != null) {
+            String[] cookieArray = cookieHeader.split("; ");
+            for (String cookie : cookieArray) {
+                String[] parts = cookie.split("=");
+                if (parts.length == 2) {
+                    cookies.put(parts[0], parts[1]);
+                }
+            }
+        }
+
+        return cookies;
+    }
+
+    protected boolean hasCorrectCookie(HttpExchange exchange) {
+        Map<String, String> cookies = parseCookies(exchange.getRequestHeaders().getFirst("Cookie"));
+        return cookies.containsKey("userToken") && cookies.containsKey("permission");
+    }
+
+    protected boolean setCookie(HttpExchange exchange) {
+
+        Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
+        // Get the cookie from the request
+        if (!hasCorrectCookie(exchange) && !params.containsKey("userToken")) {
+            return false;
+        }
+        Map<String, String> fields = SimpleHttpServer.getBaseController().get_MemberField(params.get("userToken"));
+        if (fields == null) {
+            System.out.println("Error userToken: " + params.get("userToken"));
+            return false;
+        }
+        exchange.getResponseHeaders().add("Set-Cookie", "userToken=" + params.get("userToken"));
+        exchange.getResponseHeaders().add("Set-Cookie", "permission=" + fields.get("permission"));
+        return true;
+
     }
 }
