@@ -13,8 +13,7 @@ public final class OperationHandler extends BaseHandler {
         this.path = "/operation";
         this.htmlPath = "operation.html";
         this.parameters = List.of("bookToken", "operation");
-        this.responseFormat = "Member Info\n" +
-                "%s\n" +
+        this.responseFormat = "%s\n" +
                 "Book Info\n" +
                 "%s\n";
     }
