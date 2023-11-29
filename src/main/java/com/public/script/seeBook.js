@@ -14,7 +14,11 @@ function handleSubmit() {
         url: productUrl('/seeBook/api?', inputValue),
         success: function (response) {
             // Update the text box with the response
-            $("#responseTextBox").val(response);
+            // $("#responseTextBox").val(response);
+            const MemberGrid = document.getElementById('MemberGrid');
+            MemberGrid.innerHTML = '';
+
+            bookJsonToHtml(MemberGrid, response);
         },
         error: function (error) {
             console.error("Error:", error);

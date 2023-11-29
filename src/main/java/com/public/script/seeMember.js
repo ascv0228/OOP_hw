@@ -32,7 +32,8 @@
 
 window.onload = function () {
     handleSendRequest("/seeMember/api").then(function (response) {
-        const MemberGrid = document.getElementById('myForm');
+        const MemberGrid = document.getElementById("MemberGrid");
+        MemberGrid.innerHTML = '';
 
         memberJsonToHtml(MemberGrid, response);
 

@@ -19,10 +19,13 @@ function handleSubmit() {
         type: "GET",
         url: productUrl('/addBook/api?', inputValue),
         success: function (response) {
-            $("#responseTextBox").val(response);
+            const MemberGrid = document.getElementById('MemberGrid');
+            MemberGrid.innerHTML = '';
+
+            bookJsonToHtml(MemberGrid, response);
         },
         error: function (error) {
-            $("#responseTextBox").val("Error:", error);
+            console.error("Error:", error);
         }
     });
 }

@@ -8,16 +8,8 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/style/base.css">
     <script src="script/base.js"></script>
-    <script src="script/seeMember.js"></script>
+    <script src="script/seeBook.js"></script>
     <title>Library System SeeBook</title>
-    <style>
-        /* Add your styles for the grid here */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 20px;
-        }
-    </style>
 </head>
 
 <body>
@@ -26,8 +18,17 @@
     <button id="goHomeButton" onclick="window.location.href = '/'">
         <i class="fas fa-home"></i> Home
     </button><br><br>
-    <form id="myForm" class="grid-container">
+    <form id="myForm">
+        <label>Enter bookToken:</label><br>
+        <input type='text' class="longBox" id='bookToken' placeholder='Enter your bookToken'><br><br>
+        <button type="button" onclick="handleSubmit()">Submit</button> <button type="button"
+            onclick="handleOperation()">Operation</button><br><br>
+        <!-- <textarea type="text" class="responseTextBox" id="responseTextBox"
+            placeholder="Response will appear here"></textarea><br> -->
     </form>
+    <div class="grid-memberContainer" id="MemberGrid">
+
+    </div>
 
 </body>
 
