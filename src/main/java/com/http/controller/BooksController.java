@@ -185,10 +185,3 @@ public class BooksController {
     }
 
 }
-// if (retrieved instanceof Child) {
-// Child retrievedChild = (Child) retrieved;
-// System.out.println("Parent Field: " + retrievedChild.parentField);
-// System.out.println("Child Field: " + retrievedChild.childField);
-// } else {
-// System.out.println("Not an instance of Child");
-// }

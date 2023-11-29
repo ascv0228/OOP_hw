@@ -73,7 +73,7 @@ public class EBook extends Book {
     }
 
     private boolean do_AddBook() {
-        if (this.get_bookStatus() != BookStatus.UNKNOWN || this.get_bookStatus() != BookStatus.DISCARDED)
+        if (this.get_bookStatus() != BookStatus.UNKNOWN && this.get_bookStatus() != BookStatus.DISCARDED)
             return false;
 
         this.set_bookStatus(BookStatus.AVAILABLE);

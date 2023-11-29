@@ -11,26 +11,32 @@ public final class SeeBookHandler extends BaseHandler {
 
     public SeeBookHandler() {
         this.path = "/seeBook";
-        this.htmlPath = "seeBook.html";
         this.parameters = List.of("bookToken");
+        this.htmlPath = "seeBook.html";
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        // 处理HTTP请求
-
-        Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
-        if (params.size() == 0) {
-            sendHtml(exchange);
+        if (isApiPath(exchange)) {
+            handleApi(exchange);
             return;
         }
+        handlePage(exchange);
+        return;
+    }
+
+    public void handlePage(HttpExchange exchange) throws IOException {
+        sendHtml(exchange);
+    }
+
+    public void handleApi(HttpExchange exchange) throws IOException {
+        Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
         if (!checkParameter(params)) {
-            String response = sendErrorResponse();
-            sendResponse(exchange, response);
+            sendErrorResponse(exchange);
             return;
         }
         String book = SimpleHttpServer.getBaseController().get_BookInfo(params.get("bookToken"));
-        String response = "BookInfo:\n" + book;
+        String response = book;
 
         sendResponse(exchange, response);
     }

@@ -12,40 +12,46 @@ public final class AddBookHandler extends BaseHandler {
 
     public AddBookHandler() {
         this.path = "/addBook";
-
-        this.htmlPath = "addBook.html";
-        this.parameters = List.of("userToken", "title", "description", "bookForm", "language", "bookGenres",
+        this.parameters = List.of("title", "description", "bookForm", "language", "bookGenres",
                 "location");
+        this.htmlPath = "addBook.html";
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.println(exchange.getRequestURI().getQuery());
-        // 处理HTTP请求
-        Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
-        if (params.size() == 0) {
-            sendHtml(exchange);
+        if (isApiPath(exchange)) {
+            handleApi(exchange);
             return;
         }
-        if (!checkParameter(params)) {
-            String response = sendErrorResponse();
-            sendResponse(exchange, response);
-            return;
-        }
+        handlePage(exchange);
+        return;
+    }
 
-        boolean isAuthorized = SimpleHttpServer.getBaseController().get_isAdmin(params.get("userToken"));
+    public void handlePage(HttpExchange exchange) throws IOException {
+        sendHtml(exchange);
+    }
+
+    public void handleApi(HttpExchange exchange) throws IOException {
+        Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
+        if (!checkParameter(params)) {
+            sendErrorResponse(exchange);
+            return;
+        }
+        String userToken = parseCookies(exchange).get("userToken");
+        boolean isAuthorized = SimpleHttpServer.getBaseController().get_isAdmin(userToken);
         String response;
         if (isAuthorized) {
             List<String> bookGenres = Arrays.asList(params.get("bookGenres").split("\\+"));
-            String book = SimpleHttpServer.getBaseController().addBook(params.get("userToken"),
+            String book = SimpleHttpServer.getBaseController().addBook(userToken,
                     params.get("title"), params.get("description"), params.get("bookForm"), params.get("language"),
                     bookGenres,
                     params.get("location"));
-            response = String.format("Operation Handler\n" + "Book Info\n" + "%s", book);
+            response = book;
         } else {
-            response = "Operation Error";
+            response = null;
         }
 
         sendResponse(exchange, response);
     }
+
 }

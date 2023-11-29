@@ -18,17 +18,25 @@ public final class LogoutHandler extends BaseHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.println("AAAA");
+        if (isApiPath(exchange)) {
+            handleApi(exchange);
+            return;
+        }
+        handlePage(exchange);
+        return;
+    }
 
-        String requestMethod = exchange.getRequestMethod();
+    public void handlePage(HttpExchange exchange) throws IOException {
+        // sendHtml(exchange);
+    }
 
-        // Get the cookie from the request
-
+    public void handleApi(HttpExchange exchange) throws IOException {
         exchange.getResponseHeaders().add("Set-Cookie",
                 "userToken=" + "; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/");
         exchange.getResponseHeaders().add("Set-Cookie",
                 "permission=" + "; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/");
         sendResponse(exchange, "Success");
+
     }
 
 }

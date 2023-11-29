@@ -11,26 +11,34 @@ public final class LoginHandler extends BaseHandler {
 
     public LoginHandler() {
         this.path = "/login";
-        this.htmlPath = "login.html";
         this.parameters = List.of("userToken");
+        this.htmlPath = "login.html";
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-
-        Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
-        if (params.size() == 0) {
-            sendHtml(exchange);
+        if (isApiPath(exchange)) {
+            handleApi(exchange);
             return;
         }
+        handlePage(exchange);
+        return;
+    }
+
+    public void handlePage(HttpExchange exchange) throws IOException {
+        sendHtml(exchange);
+    }
+
+    public void handleApi(HttpExchange exchange) throws IOException {
+
+        Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
         if (!checkParameter(params)) {
-            String response = sendErrorResponse();
-            sendResponse(exchange, response);
+            sendErrorResponse(exchange);
             return;
         }
         setCookie(exchange);
         String member = SimpleHttpServer.getBaseController().get_MemberInfo(params.get("userToken"));
-        String response = "Login member:\n" + member;
+        String response = member;
 
         sendResponse(exchange, response);
     }

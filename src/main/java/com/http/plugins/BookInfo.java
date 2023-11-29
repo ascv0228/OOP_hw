@@ -2,6 +2,7 @@ package com.http.plugins;
 
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.http.structure.BookGenre;
 import com.http.structure.Language;
 
@@ -33,5 +34,13 @@ public class BookInfo {
 
     public String get_description() {
         return this.description;
+    }
+
+    public Language get_language() {
+        return this.language;
+    }
+
+    public List<BookGenre> get_genres() {
+        return this.genres;
     }
 }

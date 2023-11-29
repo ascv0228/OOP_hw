@@ -28,15 +28,15 @@ public abstract class BaseHandler implements HttpHandler {
         return this.parameters == null ? List.of("") : this.parameters;
     }
 
-    protected String sendErrorResponse() {
-        System.out.println("sendErrorResponse");
-        return "Necessary URL Parameter:\n" + String.join(", ", get_parameters());
-    }
-
     protected boolean checkParameter(Map<String, String> get_parameters) {
         if (this.parameters == null)
             return true;
         return get_parameters.keySet().containsAll(this.parameters);
+    }
+
+    protected boolean isApiPath(HttpExchange exchange) {
+        String requestPath = exchange.getRequestURI().getPath();
+        return requestPath.equals(this.path + "/api");
     }
 
     @Override
@@ -64,6 +64,30 @@ public abstract class BaseHandler implements HttpHandler {
         sendResponse(exchange, fileBytes);
     }
 
+    protected void sendScriptResponse(HttpExchange exchange, String requestPath) throws IOException {
+        byte[] fileBytes = readFileBytes(BaseHandler.htmlRootPath + requestPath);
+        sendResponse(exchange, fileBytes, "application/javascript");
+    }
+
+    protected void sendStyleResponse(HttpExchange exchange, String requestPath) throws IOException {
+        byte[] fileBytes = readFileBytes(BaseHandler.htmlRootPath + requestPath);
+        sendResponse(exchange, fileBytes, "text/css");
+    }
+
+    protected void sendErrorResponse(HttpExchange exchange) throws IOException {
+        System.out.println("sendErrorResponse");
+        String response = "Necessary URL Parameter:\n" + String.join(", ", get_parameters());
+
+        exchange.sendResponseHeaders(507, response.length());
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(response.getBytes());
+        }
+    }
+
+    protected void sendResponse(HttpExchange exchange, byte[] response) throws IOException {
+        sendResponse(exchange, response, response.length, 200, "text/html");
+    }
+
     protected void sendResponse(HttpExchange exchange, String response) throws IOException {
         exchange.sendResponseHeaders(200, response.length());
         try (OutputStream os = exchange.getResponseBody()) {
@@ -71,9 +95,22 @@ public abstract class BaseHandler implements HttpHandler {
         }
     }
 
-    protected void sendResponse(HttpExchange exchange, byte[] response) throws IOException {
-        exchange.getResponseHeaders().set("Content-Type", "text/html");
-        exchange.sendResponseHeaders(200, response.length);
+    protected void sendResponse(HttpExchange exchange, String response, String value) throws IOException {
+        sendResponse(exchange, response.getBytes(), response.length(), 200, value);
+    }
+
+    protected void sendResponse(HttpExchange exchange, byte[] response, String value) throws IOException {
+        sendResponse(exchange, response, response.length, 200, value);
+    }
+
+    protected void sendResponse(HttpExchange exchange, String response, int rCode, String value) throws IOException {
+        sendResponse(exchange, response.getBytes(), response.length(), rCode, value);
+    }
+
+    protected void sendResponse(HttpExchange exchange, byte[] response, int responseLength, int rCode, String value)
+            throws IOException {
+        exchange.getResponseHeaders().set("Content-Type", value);
+        exchange.sendResponseHeaders(rCode, responseLength);
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(response);
         }
@@ -82,6 +119,10 @@ public abstract class BaseHandler implements HttpHandler {
     protected static byte[] readFileBytes(String filePath) throws IOException {
         Path path = Paths.get(filePath);
         return Files.readAllBytes(path);
+    }
+
+    protected Map<String, String> parseCookies(HttpExchange exchange) {
+        return parseCookies(exchange.getRequestHeaders().getFirst("Cookie"));
     }
 
     // Parse the cookies from the request

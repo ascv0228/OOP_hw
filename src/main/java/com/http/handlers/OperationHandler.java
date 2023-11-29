@@ -12,7 +12,7 @@ public final class OperationHandler extends BaseHandler {
     public OperationHandler() {
         this.path = "/operation";
         this.htmlPath = "operation.html";
-        this.parameters = List.of("userToken", "bookToken", "operation");
+        this.parameters = List.of("bookToken", "operation");
         this.responseFormat = "Member Info\n" +
                 "%s\n" +
                 "Book Info\n" +
@@ -21,24 +21,31 @@ public final class OperationHandler extends BaseHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        // 处理HTTP请求
+        if (isApiPath(exchange)) {
+            handleApi(exchange);
+            return;
+        }
+        handlePage(exchange);
+        return;
+    }
 
+    public void handlePage(HttpExchange exchange) throws IOException {
+        sendHtml(exchange);
+    }
+
+    public void handleApi(HttpExchange exchange) throws IOException {
         Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
-        if (params.size() == 0) {
-            sendHtml(exchange);
-            return;
-        }
-        if (!checkParameter(params)) {
-            String response = sendErrorResponse();
-            sendResponse(exchange, response);
-            return;
-        }
 
+        if (!checkParameter(params)) {
+            sendErrorResponse(exchange);
+            return;
+        }
+        String userToken = parseCookies(exchange).get("userToken");
         boolean result = SimpleHttpServer.getBaseController().TODO_ExecuteOperation(
-                params.get("userToken"), params.get("bookToken"), params.get("operation"));
+                userToken, params.get("bookToken"), params.get("operation"));
         String response;
         if (result) {
-            String member = SimpleHttpServer.getBaseController().get_MemberInfo(params.get("userToken"));
+            String member = SimpleHttpServer.getBaseController().get_MemberInfo(userToken);
             String book = SimpleHttpServer.getBaseController().get_BookInfo(params.get("bookToken"));
             response = String.format(responseFormat, member, book);
         } else {

@@ -11,26 +11,32 @@ public final class SeeMemberHandler extends BaseHandler {
 
     public SeeMemberHandler() {
         this.path = "/seeMember";
-        this.htmlPath = "seeMember.html";
         this.parameters = List.of("userToken");
+        this.htmlPath = "seeMember.html";
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        // 处理HTTP请求
-
-        Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
-        if (params.size() == 0) {
-            sendHtml(exchange);
+        if (isApiPath(exchange)) {
+            handleApi(exchange);
             return;
         }
+        handlePage(exchange);
+        return;
+    }
+
+    public void handlePage(HttpExchange exchange) throws IOException {
+        sendHtml(exchange);
+    }
+
+    public void handleApi(HttpExchange exchange) throws IOException {
+        Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
         if (!checkParameter(params)) {
-            String response = sendErrorResponse();
-            sendResponse(exchange, response);
+            sendErrorResponse(exchange);
             return;
         }
         String member = SimpleHttpServer.getBaseController().get_MemberInfo(params.get("userToken"));
-        String response = "MemberInfo:\n" + member;
+        String response = member;
 
         sendResponse(exchange, response);
     }

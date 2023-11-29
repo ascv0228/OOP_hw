@@ -12,6 +12,7 @@ import com.http.plugins.RegularMember;
 import com.http.structure.BookForm;
 import com.http.structure.Operation;
 import com.http.structure.Permission;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
 import java.util.List;
@@ -159,26 +160,22 @@ public class BaseController {
         return false;
     }
 
-    public Map<String, String> createMember(String name, String authority, String gender) {
+    public Pair<String, String> createMember(String name, String authority, String gender) {
         MemberInfo info = new MemberInfo(name, gender);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Member member = (authority.equals("admin")) ? mController.createAdminMember(info)
                 : mController.createRegularMember(info);
 
-        Map<String, String> output = new HashMap<>();
-        output.put(member.get_userToken(), gson.toJson(member));
-        return output;
+        return Pair.of(member.get_userToken(), gson.toJson(member));
     }
 
     public String addBook(String userToken, String title, String description, String bookForm, String language,
             List<String> genres, String location) {
         if (!get_isAdmin(userToken))
             return "Failure";
-
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Book book = bController.createBook(title, description, bookForm, language, genres, location);
         boolean result = TODO_ExecuteOperation(userToken, book.get_bookToken(), Operation.Add);
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return result ? gson.toJson(book) : "Failure";
 
     }
