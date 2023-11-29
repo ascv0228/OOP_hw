@@ -2,62 +2,47 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <title>Library System "SeeBook"</title>
-    <style>
-        #responseTextBox {
-            height: 500px;
-            width: 500px;
-            /* Adjust the height as needed */
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/style/base.css">
+  <script src="script/bookCollect.js"></script>
+  <script src="script/base.js"></script>
+  <title>Book Display</title>
+  <style>
+    /* Add your styles for the grid here */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
 
-        .longBox {
-            width: 500px;
-        }
-    </style>
+    .grid-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: start;
+      cursor: pointer;
+    }
+
+    .grid-item:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
 </head>
 
-<body>
-
-    <h2>Library System SeeBook</h2>
-    <button id="goHomeButton" onclick="window.location.href = '/'">
-        <i class="fas fa-home"></i> Home
-    </button><br><br>
-    <form id="myForm">
-        <button type="button" onclick="handleSubmit()">Submit</button><br><br>
-        <textarea type="text" id="responseTextBox" placeholder="Response will appear here"></textarea><br>
-    </form>
-
-    <script>
-        function handleSubmit() {
-
-            // Make an AJAX request (POST or GET) to the server
-            $.ajax({
-                type: "GET", // or "GET" depending on your needs
-                // url: '/hello?name=' + inputValue,
-                url: '/bookCollect',
-                success: function (response) {
-                    // Update the text box with the response
-                    $("#responseTextBox").val(response);
-                },
-                error: function (error) {
-                    console.error("Error:", error);
-                }
-            });
-        }
-        function checkText(id) {
-            var inputValue = $("#" + id).val();
-            return (inputValue.trim() !== "");
-        }
-        function outputInputValue(ids) {
-            var values = ids.map(id => id + "=" + $("#" + id).val());
-            return values.join("&");
-        }
-    </script>
-
+<body onload="refresh()">
+  <h2>Library System bookCollect</h2>
+  <button id="goHomeButton" onclick="window.location.href = '/'">
+    <i class="fas fa-home"></i> Home
+  </button><br><br>
+  <h3>Paper-Book</h3><br>
+  <div class="grid-container" id="pbookGrid">
+    <!-- JavaScript will populate this section -->
+  </div><br><br>
+  <h3>E-Book</h3><br>
+  <div class="grid-container" id="ebookGrid">
+    <!-- JavaScript will populate this section -->
+  </div><br><br>
 </body>
 
 </html>

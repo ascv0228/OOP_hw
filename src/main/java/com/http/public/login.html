@@ -6,19 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <title>Library System Create Account</title>
-    <style>
-        #responseTextBox {
-            height: 500px;
-            width: 500px;
-            /* Adjust the height as needed */
-        }
-
-        .longBox {
-            width: 500px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/style/base.css">
+    <script src="script/base.js"></script>
+    <script src="script/login.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Library System Create Account</title>
 
 </head>
 
@@ -32,38 +24,11 @@
         <input type='text' class="longBox" id='userToken' placeholder='Enter your userToken'><br><br>
         <button type="button" onclick="handleSubmit()">Submit</button><br><br>
 
-        <textarea type="text" id="responseTextBox" placeholder="Response will appear here"></textarea><br>
+        <textarea type="text" class="responseTextBox" id="responseTextBox"
+            placeholder="Response will appear here"></textarea><br>
     </form>
     <script>
-        function handleSubmit() {
-            event.preventDefault();
-            const array1 = ["userToken"]
-            if (!array1.every(checkText)) {
-                alert("Please check input");
-                return;
-            }
-            var inputValue = outputInputValue(array1);
-            console.log(inputValue)
 
-            $.ajax({
-                type: "GET",
-                url: '/login?' + inputValue,
-                success: function (response) {
-                    $("#responseTextBox").val(response);
-                },
-                error: function (error) {
-                    console.error("Error:", error);
-                }
-            });
-        }
-        function checkText(id) {
-            var inputValue = $("#" + id).val();
-            return (inputValue.trim() !== "");
-        }
-        function outputInputValue(ids) {
-            var values = ids.map(id => id + "=" + $("#" + id).val());
-            return values.join("&");
-        }
     </script>
 </body>
 

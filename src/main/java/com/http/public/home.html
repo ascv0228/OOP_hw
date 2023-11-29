@@ -6,34 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style/base.css">
+    <script src="script/base.js"></script>
+    <script src="script/home.js"></script>
     <title>Library System</title>
-    <style>
-        .hidden {
-            display: none;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: right;
-            width: 500px;
-        }
-
-        .login-button {
-            padding: 8px 12px;
-            background-color: #4CAF50;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-right: 20px;
-            cursor: pointer;
-        }
-
-        .login-button:hover {
-            background-color: #45a049;
-        }
-    </style>
 </head>
 
 <body onload="pageLoaded()">
@@ -43,7 +19,7 @@
     <h2>Library System</h2>
     <label>Choice Target</label><br>
 
-    <div class=" hidden" id="login_hidden">
+    <div class="hidden" id="login_hidden">
         <button id="login" onclick="window.location.href = '/login'">Login</button><br><br>
         <button id="createAccount" onclick="window.location.href = '/createAccount'">CreateAccount</button><br><br>
     </div>
@@ -58,54 +34,6 @@
     </div>
 
 </body>
-<script>
-    function pageLoaded() {
-        const cookieMap = getCookie();
-        var class_login_hidden = document.getElementById("login_hidden");
-        var class_logout_hidden = document.getElementById("logout_hidden");
-        var class_headerLogout = document.getElementById("headerLogout");
-        var class_regular_hidden = document.getElementById("regular_hidden");
 
-        if ("userToken" in cookieMap && "permission" in cookieMap) {
-            class_login_hidden.classList.add("hidden");
-            class_logout_hidden.classList.remove("hidden");
-            class_headerLogout.classList.remove("hidden");
-            if (cookieMap["permission"] == "Administrative") {
-                class_regular_hidden.classList.remove("hidden");
-            } else {
-                class_regular_hidden.classList.add("hidden");
-            }
-        } else {
-            class_login_hidden.classList.remove("hidden");
-            class_logout_hidden.classList.add("hidden");
-            class_headerLogout.classList.add("hidden");
-            class_regular_hidden.classList.add("hidden");
-        }
-    }
-    function getCookie() {
-        var cookieMap = {};
-        const cookieArray = document.cookie.split('; ');
-        for (const cookie of cookieArray) {
-            const [cookieName, cookieValue] = cookie.split('=');
-            cookieMap[cookieName] = cookieValue;
-        }
-        return cookieMap;
-    }
-    function headerLogout() {
-        $.ajax({
-            type: "GET", // or "GET" depending on your needs
-            url: '/logout',
-            success: function (response) {
-                setTimeout(500);
-                location.reload(true);
-            },
-            error: function (error) {
-                console.error("Error:", error);
-            }
-        });
-    }
-
-
-</script>
 
 </html>

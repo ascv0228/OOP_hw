@@ -6,18 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <title>Library System "SeeBook"</title>
-    <style>
-        #responseTextBox {
-            height: 500px;
-            width: 500px;
-            /* Adjust the height as needed */
-        }
-
-        .longBox {
-            width: 500px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/style/base.css">
+    <script src="script/base.js"></script>
+    <script src="script/seeBook.js"></script>
+    <title>Library System SeeBook</title>
 </head>
 
 <body>
@@ -29,43 +21,11 @@
     <form id="myForm">
         <label>Enter bookToken:</label><br>
         <input type='text' class="longBox" id='bookToken' placeholder='Enter your bookToken'><br><br>
-        <button type="button" onclick="handleSubmit()">Submit</button><br><br>
-        <textarea type="text" id="responseTextBox" placeholder="Response will appear here"></textarea><br>
+        <button type="button" onclick="handleSubmit()">Submit</button> <button type="button"
+            onclick="handleOperation()">Operation</button><br><br>
+        <textarea type="text" class="responseTextBox" id="responseTextBox"
+            placeholder="Response will appear here"></textarea><br>
     </form>
-
-    <script>
-        function handleSubmit() {
-            const array1 = ["bookToken"];
-            if (!array1.every(checkText)) {
-                alert("Please check input");
-                return;
-            }
-
-            var inputValue = outputInputValue(array1);
-
-            // Make an AJAX request (POST or GET) to the server
-            $.ajax({
-                type: "GET", // or "GET" depending on your needs
-                // url: '/hello?name=' + inputValue,
-                url: '/seeBook?' + inputValue,
-                success: function (response) {
-                    // Update the text box with the response
-                    $("#responseTextBox").val(response);
-                },
-                error: function (error) {
-                    console.error("Error:", error);
-                }
-            });
-        }
-        function checkText(id) {
-            var inputValue = $("#" + id).val();
-            return (inputValue.trim() !== "");
-        }
-        function outputInputValue(ids) {
-            var values = ids.map(id => id + "=" + $("#" + id).val());
-            return values.join("&");
-        }
-    </script>
 
 </body>
 

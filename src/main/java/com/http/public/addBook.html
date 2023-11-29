@@ -6,22 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="script/base.js"></script>
+    <script src="script/addBook.js"></script>
     <title>Library System "AddBook"</title>
+    <link rel="stylesheet" type="text/css" href="/style/base.css">
     <style>
-        #responseTextBox {
-            height: 500px;
-            width: 500px;
-            /* Adjust the height as needed */
-        }
-
-        .longBox {
-            width: 500px;
-        }
-
-        .hidden {
-            display: none;
-        }
-
         .checkbox-grid {
             display: grid;
             grid-template-columns: repeat(3, 200px);
@@ -43,8 +32,8 @@
         <i class="fas fa-home"></i> Home
     </button><br><br>
     <form id="myForm">
-        <label>Enter UserToken:</label><br>
-        <input type='text' class="longBox" id='userToken' placeholder='Enter your userToken'><br><br>
+        <!-- <label>Enter UserToken:</label><br>
+        <input type='text' class="longBox" id='userToken' placeholder='Enter your userToken'><br><br> -->
         <label>Enter Title of Book:</label><br>
         <input type='text' class="longBox" id='title' placeholder='Enter title'><br><br>
         <label>Enter Description of Book:</label><br>
@@ -74,7 +63,7 @@
                 <input type="checkbox" id="Mystery" value="Mystery">Mystery
             </label>
             <label>
-                <input type="checkbox" id="Science Fiction" value="Science Fiction">Science Fiction
+                <input type="checkbox" id="Science Fiction" value="ScienceFiction">Science Fiction
             </label>
             <label>
                 <input type="checkbox" id="Fantasy" value="Fantasy">Fantasy
@@ -83,7 +72,7 @@
                 <input type="checkbox" id="Thriller" value="Thriller">Thriller
             </label>
             <label>
-                <input type="checkbox" id="Historical Fiction" value="Historical Fiction">Historical Fiction
+                <input type="checkbox" id="Historical Fiction" value="HistoricalFiction">Historical Fiction
             </label>
         </div>
         <br>
@@ -91,80 +80,12 @@
         <input type='text' class="longBox" id='location' placeholder='Enter Book Location' value="-"><br><br>
 
 
-
-
-
-
-
         <button type="button" onclick="handleSubmit()">Submit</button><br><br>
-        <textarea type="text" id="responseTextBox" placeholder="Response will appear here"></textarea><br>
+        <textarea type="text" class="responseTextBox" id="responseTextBox"
+            placeholder="Response will appear here"></textarea><br>
     </form>
 
-    <script>
-        function handleSubmit() {
-            const array1 = ["userToken", "title", "description", "bookForm", "language", "location"];
-            if (!array1.every(checkText)) {
-                alert("Please check input");
-                return;
-            }
-            var selectedGenres = get_genreValue()
-            if (selectedGenres.length < 1) {
-                alert("Please check genre");
-                return;
-            }
 
-            var inputValue = outputInputValue(array1) + "&bookGenres=" + selectedGenres;
-            console.log(inputValue)
-
-            // Make an AJAX request (POST or GET) to the server
-            $.ajax({
-                type: "GET", // or "GET" depending on your needs
-                // url: '/hello?name=' + inputValue,
-                url: '/addBook?' + inputValue,
-                success: function (response) {
-                    // Update the text box with the response
-                    $("#responseTextBox").val(response);
-                },
-                error: function (error) {
-                    console.error("Error:", error);
-                }
-            });
-        }
-        function checkText(id) {
-            var inputValue = $("#" + id).val();
-            return (inputValue.trim() !== "");
-        }
-        function outputInputValue(ids) {
-            var values = ids.map(id => id + "=" + $("#" + id).val());
-            return values.join("&");
-        }
-        function get_genreValue() {
-            var selectedGenres = [];
-            $("input[type=checkbox]:checked").each(function () {
-                selectedGenres.push($(this).val());
-            });
-            return selectedGenres.join("+");
-        }
-        function showHideLocation() {
-            var select_bookForm = document.getElementById("bookForm");
-            var box_location = document.getElementById("location");
-            var box_location_label = document.querySelector('label[for="location"]');
-
-            // Get the selected value from selectA
-            var select_bookForm_value = select_bookForm.value;
-
-            // Show or hide selectB based on the selected value
-            if (select_bookForm_value === "pbook") {
-                box_location.classList.remove("hidden");
-                box_location_label.classList.remove("hidden");
-            } else {
-                box_location.classList.add("hidden");
-                box_location_label.classList.add("hidden");
-                // Optionally reset the value of selectB
-                box_location.value = "-";
-            }
-        } 
-    </script>
 
 </body>
 

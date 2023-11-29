@@ -6,20 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style/base.css">
+    <script src="script/base.js"></script>
+    <script src="script/operation.js"></script>
     <title>Library System Operation</title>
-    <style>
-        #responseMemberTextBox {
-            height: 500px;
-            width: 350px;
-            /* Adjust the height as needed */
-        }
 
-        #responseBookTextBox {
-            height: 500px;
-            width: 350px;
-            /* Adjust the height as needed */
-        }
-    </style>
 </head>
 
 <body>
@@ -29,67 +20,22 @@
         <i class="fas fa-home"></i> Home
     </button><br><br>
     <form id="myForm">
-        <label>Enter userToken:</label><br>
-        <input type="text" id="userToken" placeholder="Enter your userToken"><br><br>
         <label>Enter bookToken:</label><br>
-        <input type="text" id="bookToken" placeholder="Enter bookToken"><br><br>
+        <input type="text" class="longBox" id="bookToken" placeholder="Enter bookToken"><br><br>
 
         <label for="operation">Select your operation:</label><br>
         <select id="operation">
             <option value="CheckIn">CheckIn</option>
             <option value="CheckOut">CheckOut</option>
-            <option value="Delete">Delete [only admin]</option>
             <option value="ReadOnline">ReadOnline [only E-Book]</option>
+            <option value="Delete">Delete [only admin]</option>
         </select><br><br>
         <button type="button" onclick="handleSubmit()">Submit</button><br><br>
 
-        <textarea id="responseMemberTextBox" placeholder="Response will appear here"></textarea>
-        <textarea id="responseBookTextBox" placeholder="Response will appear here"></textarea>
+        <textarea class="responseTextBox" id="responseMemberTextBox" placeholder="Response will appear here"></textarea>
+        <textarea class="responseTextBox" id="responseBookTextBox" placeholder="Response will appear here"></textarea>
 
     </form>
-
-    <script>
-        function handleSubmit() {
-            const array1 = ["userToken", "bookToken", "operation"];
-            if (!array1.every(checkText)) {
-                alert("Please check input");
-                return;
-            }
-
-            var inputValue = outputInputValue(array1);
-
-            $.ajax({
-                type: "GET",
-                url: '/operation?' + inputValue,
-                success: function (response) {
-                    let index = response.indexOf("Book Info");
-
-                    if (index !== -1) {
-                        // Extract string1 and string2 based on the index
-                        let string1 = response.substring(0, index).trim();  // "aaa bbb"
-                        let string2 = response.substring(index).trim();    // "ccc ddd"
-
-
-                        $("#responseMemberTextBox").val(string1);
-                        $("#responseBookTextBox").val(string2);
-                    } else {
-                        $("#responseMemberTextBox").val(response);
-                    }
-                },
-                error: function (error) {
-                    console.error("Error:", error);
-                }
-            });
-        }
-        function checkText(id) {
-            var inputValue = $("#" + id).val();
-            return (inputValue.trim() !== "");
-        }
-        function outputInputValue(ids) {
-            var values = ids.map(id => id + "=" + $("#" + id).val());
-            return values.join("&");
-        }
-    </script>
 
 </body>
 
