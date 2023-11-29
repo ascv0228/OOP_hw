@@ -166,8 +166,8 @@ public abstract class BaseHandler implements HttpHandler {
             System.out.println("Error userToken: " + userToken);
             return false;
         }
-        exchange.getResponseHeaders().add("Set-Cookie", "userToken=" + userToken);
-        exchange.getResponseHeaders().add("Set-Cookie", "permission=" + fields.get("permission"));
+        exchange.getResponseHeaders().add("Set-Cookie", "userToken=" + userToken + "; Path=/");
+        exchange.getResponseHeaders().add("Set-Cookie", "permission=" + fields.get("permission") + "; Path=/");
         return true;
 
     }
