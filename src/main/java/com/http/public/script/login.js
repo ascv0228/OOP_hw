@@ -4,16 +4,19 @@ function handleSubmit() {
         alert("Please check input");
         return;
     }
-    if (!isLogin()) {
-        alert("Please Login");
-        return;
-    }
+    // if (!isLogin()) {
+    //     alert("Please Login");
+    //     return;
+    // }
+    var inputValue = outputInputValue(array1);
+    console.log(inputValue)
     var url = productUrl('/login/api?', inputValue)
     $.ajax({
         type: "GET",
         url: '/login/api?' + inputValue,
         success: function (response) {
-            window.location.href = '/'
+            $("#responseTextBox").val(response);
+            // window.location.href = '/'
         },
         error: function (error) {
             console.error("Error:", error);

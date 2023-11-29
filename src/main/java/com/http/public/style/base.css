@@ -33,3 +33,42 @@ header {
 .login-button:hover {
     background-color: #45a049;
 }
+
+
+.grid-memberContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+}
+
+.grid-memberItem {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.member-details {
+    color: #000;
+}
+
+.records-toggle {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;
+    margin-top: 10px;
+}
+
+.record-details {
+    background-color: rgb(200, 255, 200);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.hidden {
+    display: none;
+}

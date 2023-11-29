@@ -18,25 +18,11 @@ function createGridItem(bookToken, bookData) {
     return gridItem;
 }
 
-function handleSendRequest() {
-    return new Promise(function (resolve, reject) {
-        // Make an AJAX request (GET in this case) to the server
-        $.ajax({
-            type: "GET",
-            url: '/bookCollect/api',
-            success: function (response) {
-                resolve(response); // Resolve the promise with the response
-            },
-            error: function (error) {
-                reject(error); // Reject the promise with the error
-            }
-        });
-    });
-}
+
 
 function refresh() {
     // Usage
-    handleSendRequest().then(function (response) {
+    handleSendRequest('/bookCollect/api').then(function (response) {
         const bookData = JSON.parse(response);
 
         const PBookgridContainer = document.getElementById('pbookGrid');

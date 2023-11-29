@@ -11,7 +11,7 @@ public final class SeeMemberHandler extends BaseHandler {
 
     public SeeMemberHandler() {
         this.path = "/seeMember";
-        this.parameters = List.of("userToken");
+        // this.parameters = List.of("userToken");
         this.htmlPath = "seeMember.html";
     }
 
@@ -30,13 +30,17 @@ public final class SeeMemberHandler extends BaseHandler {
     }
 
     public void handleApi(HttpExchange exchange) throws IOException {
-        Map<String, String> params = getParameters(exchange.getRequestURI().getQuery());
-        if (!checkParameter(params)) {
-            sendErrorResponse(exchange);
-            return;
-        }
-        String member = SimpleHttpServer.getBaseController().get_MemberInfo(params.get("userToken"));
-        String response = member;
+        // Map<String, String> params =
+        // getParameters(exchange.getRequestURI().getQuery());
+        // if (!checkParameter(params)) {
+        // sendErrorResponse(exchange);
+        // return;
+        // }
+        // String member =
+        // SimpleHttpServer.getBaseController().get_MemberInfo(params.get("userToken"));
+        // String response = member;
+        String userToken = parseCookies(exchange).get("userToken");
+        String response = SimpleHttpServer.getBaseController().get_MemberInfo(userToken);
 
         sendResponse(exchange, response);
     }
