@@ -19,6 +19,7 @@ public abstract class Member {
         this.memberInfo = memberInfo;
         this.permission = permission;
         this.records = new ArrayList<>();
+        this.CheckOutBooks = new ArrayList<>();
     }
 
     protected Member(MemberInfo memberInfo, Permission permission) {
@@ -68,10 +69,14 @@ public abstract class Member {
     public abstract boolean exec_record(OperationRecord record);
 
     public int get_CheckOutBooksNumber() {
+        if (this.CheckOutBooks == null)
+            this.CheckOutBooks = new ArrayList<String>();
         return this.CheckOutBooks.size();
     }
 
     public List<String> get_CheckOutBooks() {
+        if (this.CheckOutBooks == null)
+            this.CheckOutBooks = new ArrayList<String>();
         return this.CheckOutBooks;
     }
 
