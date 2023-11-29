@@ -16,7 +16,7 @@ import com.sun.net.httpserver.HttpExchange;
 public abstract class BaseHandler implements HttpHandler {
     protected String path;
     protected String htmlPath;
-    private final static String htmlRootPath = "src\\main\\java\\com\\http\\public\\";
+    private final static String htmlRootPath = "src\\main\\java\\com\\public\\";
     protected String responseFormat;
     protected List<String> parameters;
 
