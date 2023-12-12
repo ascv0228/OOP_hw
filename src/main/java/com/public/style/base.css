@@ -1,3 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #dbd3c6;
+    margin: 10;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    padding-left: 10px;
+    height: 50vh;
+}
+#goHomeButton {
+    background-color: #3469a6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#goHomeButton:hover {
+    background-color: #4570b0;
+}
+
+button {
+    background-color: rgb(164, 162, 106);
+    color: rgb(0, 0, 0);
+    border: 3px solid rgb(198, 186, 186); /* 2 pixels wide solid black border */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+    
+button:hover {
+    background-color: #94a7c2;
+}
 .responseTextBox {
     height: 500px;
     width: 500px;
@@ -16,8 +52,9 @@ header {
     background-color: #333;
     color: #fff;
     padding: 10px;
+    border-radius: 10px;
     text-align: right;
-    width: 500px;
+    width: 600px;
 }
 
 .login-button {
